@@ -1,0 +1,17 @@
+# OS & IDE
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Maven & Java Build Outputs
+**/target/
+**/*.class
+**/*.jar
+
+# Node & Frontend Build Outputs
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+*.tmp
