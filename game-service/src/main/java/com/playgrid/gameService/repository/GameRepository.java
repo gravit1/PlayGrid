@@ -11,4 +11,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findByCategoryIgnoreCase(String category);
 
+    List<Game> findByIdIn(List<Long> ids);
+
 }

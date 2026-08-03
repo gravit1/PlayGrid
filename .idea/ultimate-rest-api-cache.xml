@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="UltimateRestApiCache">
+    <cachedApis>
+      <api method="POST" url="/auth/register" className="com.playgrid.authService.controller.AuthController" methodName="register" moduleName="auth-service">
+        <params>
+          <param name="body" value="{&#13;&#10;  &quot;username&quot; : &quot;&quot;,&#13;&#10;  &quot;email&quot; : &quot;&quot;,&#13;&#10;  &quot;password&quot; : &quot;&quot;&#13;&#10;}" type="BODY" dataType="RegisterRequest" />
+        </params>
+      </api>
+      <api method="POST" url="/auth/login" className="com.playgrid.authService.controller.AuthController" methodName="login" moduleName="auth-service">
+        <params>
+          <param name="body" value="{&#13;&#10;  &quot;email&quot; : &quot;&quot;,&#13;&#10;  &quot;password&quot; : &quot;&quot;&#13;&#10;}" type="BODY" dataType="LoginRequest" />
+        </params>
+      </api>
+      <api method="GET" url="/users/profile" className="com.playgrid.authService.controller.UserController" methodName="getProfile" moduleName="auth-service" />
+      <api method="POST" url="/games" className="com.playgrid.gameService.controller.GameController" methodName="createGame" moduleName="game-service">
+        <params>
+          <param name="thumbnail" value="" type="QUERY" dataType="MultipartFile" />
+        </params>
+      </api>
+      <api method="GET" url="/games" className="com.playgrid.gameService.controller.GameController" methodName="getAllGames" moduleName="game-service" />
+      <api method="GET" url="/games/{id}" className="com.playgrid.gameService.controller.GameController" methodName="getGameById" moduleName="game-service">
+        <params>
+          <param name="id" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="POST" url="/games/details" className="com.playgrid.gameService.controller.GameController" methodName="getGamesByIds" moduleName="game-service">
+        <params>
+          <param name="body" value="[ 0 ]" type="BODY" dataType="List&lt;Long&gt;" />
+        </params>
+      </api>
+      <api method="GET" url="/games/search" className="com.playgrid.gameService.controller.GameController" methodName="searchGames" moduleName="game-service">
+        <params>
+          <param name="keyword" value="" type="QUERY" dataType="String" />
+        </params>
+      </api>
+      <api method="GET" url="/games/category/{category}" className="com.playgrid.gameService.controller.GameController" methodName="getGamesByCategory" moduleName="game-service">
+        <params>
+          <param name="category" value="test" type="PATH" dataType="String" />
+        </params>
+      </api>
+      <api method="PUT" url="/games/{id}" className="com.playgrid.gameService.controller.GameController" methodName="updateGame" moduleName="game-service">
+        <params>
+          <param name="id" value="1" type="PATH" dataType="Long" />
+          <param name="thumbnail" value="" type="QUERY" dataType="MultipartFile" />
+        </params>
+      </api>
+      <api method="DELETE" url="/games/{id}" className="com.playgrid.gameService.controller.GameController" methodName="deleteGame" moduleName="game-service">
+        <params>
+          <param name="id" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="POST" url="/library/purchase" className="com.playgrid.libraryService.controller.LibraryController" methodName="purchaseGame" moduleName="library-service">
+        <params>
+          <param name="body" value="{&#13;&#10;  &quot;userId&quot; : 0,&#13;&#10;  &quot;gameId&quot; : 0&#13;&#10;}" type="BODY" dataType="PurchaseRequest" />
+        </params>
+      </api>
+      <api method="GET" url="/library/user/{userId}" className="com.playgrid.libraryService.controller.LibraryController" methodName="getUserLibrary" moduleName="library-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="GET" url="/library/user/{userId}/game/{gameId}" className="com.playgrid.libraryService.controller.LibraryController" methodName="getPurchasedGame" moduleName="library-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+          <param name="gameId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="GET" url="/library/history/{userId}" className="com.playgrid.libraryService.controller.LibraryController" methodName="getPurchaseHistory" moduleName="library-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="POST" url="/wishlist" className="com.playgrid.wishlist_service.controller.WishlistController" methodName="addToWishlist" moduleName="wishlist-service">
+        <params>
+          <param name="body" value="{&#13;&#10;  &quot;userId&quot; : 0,&#13;&#10;  &quot;gameId&quot; : 0&#13;&#10;}" type="BODY" dataType="WishlistRequest" />
+        </params>
+      </api>
+      <api method="GET" url="/wishlist/user/{userId}" className="com.playgrid.wishlist_service.controller.WishlistController" methodName="getUserWishlist" moduleName="wishlist-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="GET" url="/wishlist/user/{userId}/game/{gameId}" className="com.playgrid.wishlist_service.controller.WishlistController" methodName="isWishlisted" moduleName="wishlist-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+          <param name="gameId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+      <api method="DELETE" url="/wishlist/user/{userId}/game/{gameId}" className="com.playgrid.wishlist_service.controller.WishlistController" methodName="removeFromWishlist" moduleName="wishlist-service">
+        <params>
+          <param name="userId" value="1" type="PATH" dataType="Long" />
+          <param name="gameId" value="1" type="PATH" dataType="Long" />
+        </params>
+      </api>
+    </cachedApis>
+  </component>
+</project>

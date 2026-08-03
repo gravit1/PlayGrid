@@ -2,6 +2,7 @@ package com.playgrid.gameService.service;
 
 import com.playgrid.gameService.dto.GameRequest;
 import com.playgrid.gameService.dto.GameResponse;
+import com.playgrid.gameService.dto.GameSummaryResponse;
 import com.playgrid.gameService.dto.GameUpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,4 +23,6 @@ public interface GameService {
     List<GameResponse> searchGames(String keyword);
 
     List<GameResponse> getGamesByCategory(String category);
+
+    List<GameSummaryResponse> getGamesByIds(List<Long> ids);
 }

@@ -1,6 +1,7 @@
 package com.playgrid.gameService.controller;
 import com.playgrid.gameService.dto.GameRequest;
 import com.playgrid.gameService.dto.GameResponse;
+import com.playgrid.gameService.dto.GameSummaryResponse;
 import com.playgrid.gameService.dto.GameUpdateRequest;
 import com.playgrid.gameService.service.GameService;
 import jakarta.validation.Valid;
@@ -35,6 +36,13 @@ public class GameController {
     @GetMapping("/{id}")
     public ResponseEntity<GameResponse> getGameById(@PathVariable Long id) {
         return ResponseEntity.ok(gameService.getGameById(id));
+    }
+
+    @PostMapping("/details")
+    public ResponseEntity<List<GameSummaryResponse>> getGamesByIds(
+            @RequestBody List<Long> ids) {
+
+        return ResponseEntity.ok(gameService.getGamesByIds(ids));
     }
 
     @GetMapping("/search")

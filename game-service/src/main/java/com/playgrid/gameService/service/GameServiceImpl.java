@@ -3,6 +3,7 @@ package com.playgrid.gameService.service;
 import com.playgrid.gameService.Util.FileUploadUtil;
 import com.playgrid.gameService.dto.GameRequest;
 import com.playgrid.gameService.dto.GameResponse;
+import com.playgrid.gameService.dto.GameSummaryResponse;
 import com.playgrid.gameService.dto.GameUpdateRequest;
 import com.playgrid.gameService.entity.Game;
 import com.playgrid.gameService.exception.ResourceNotFoundException;
@@ -76,6 +77,24 @@ public class GameServiceImpl implements GameService {
         Game updatedGame = gameRepository.save(game);
 
         return mapToResponse(updatedGame);
+    }
+
+
+    @Override
+    public List<GameSummaryResponse> getGamesByIds(List<Long> ids) {
+
+        return gameRepository.findByIdIn(ids)
+                .stream()
+                .map(game -> GameSummaryResponse.builder()
+                        .id(game.getId())
+                        .title(game.getTitle())
+                        .price(game.getPrice())
+                        .discount(game.getDiscount())
+                        .thumbnailUrl(game.getThumbnailUrl())
+                        .category(game.getCategory())
+                        .active(game.getActive())
+                        .build())
+                .toList();
     }
 
     @Override
