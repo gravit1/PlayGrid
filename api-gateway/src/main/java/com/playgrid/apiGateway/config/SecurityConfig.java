@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "/reviews/**").hasAuthority("ROLE_USER")
                         .pathMatchers(HttpMethod.DELETE, "/reviews/**").hasAuthority("ROLE_USER")
                         .pathMatchers(HttpMethod.GET, "/reviews/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/orders/**").hasAuthority("ROLE_USER")
+                        .pathMatchers(HttpMethod.GET, "/orders/**").hasAuthority("ROLE_USER")
                         .anyExchange().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
