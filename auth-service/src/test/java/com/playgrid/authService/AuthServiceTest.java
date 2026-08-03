@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,7 +59,7 @@ class AuthServiceTest {
         when(passwordEncoder.encode(request.getPassword())).thenReturn("encoded-password");
         when(userDetailsService.loadUserByUsername(request.getEmail()))
                 .thenReturn(new User(request.getEmail(), "encoded-password", Collections.emptyList()));
-        when(jwtService.generateToken(any())).thenReturn("mocked-jwt-token");
+        when(jwtService.generateToken(any(), nullable(Long.class))).thenReturn("mocked-jwt-token");
 
         AuthResponse response = authService.register(request);
 

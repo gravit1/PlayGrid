@@ -2,6 +2,7 @@ package com.playgrid.libraryService.controller;
 import com.playgrid.libraryService.dto.LibraryResponse;
 import com.playgrid.libraryService.dto.PurchaseRequest;
 import com.playgrid.libraryService.service.LibraryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,16 @@ public class LibraryController {
 
     @PostMapping("/purchase")
     public ResponseEntity<LibraryResponse> purchaseGame(
-            @Valid @RequestBody PurchaseRequest request) {
+            @Valid @RequestBody PurchaseRequest request,
+            HttpServletRequest httpServletRequest) {
 
-        return ResponseEntity.ok(libraryService.purchaseGame(request));
+        return ResponseEntity.ok(libraryService.purchaseGame(getUserId(httpServletRequest), request));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<LibraryResponse>> getUserLibrary(
-            @PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<LibraryResponse>> getUserLibrary(HttpServletRequest request) {
 
-        return ResponseEntity.ok(libraryService.getUserLibrary(userId));
+        return ResponseEntity.ok(libraryService.getUserLibrary(getUserId(request)));
     }
 
     @GetMapping("/user/{userId}/game/{gameId}")
@@ -39,11 +40,23 @@ public class LibraryController {
                 libraryService.getPurchasedGame(userId, gameId));
     }
 
-    @GetMapping("/history/{userId}")
-    public ResponseEntity<List<LibraryResponse>> getPurchaseHistory(
-            @PathVariable Long userId) {
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<LibraryResponse> getPurchasedGame(
+            @PathVariable Long gameId,
+            HttpServletRequest request) {
 
         return ResponseEntity.ok(
-                libraryService.getPurchaseHistory(userId));
+                libraryService.getPurchasedGame(getUserId(request), gameId));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<LibraryResponse>> getPurchaseHistory(HttpServletRequest request) {
+
+        return ResponseEntity.ok(
+                libraryService.getPurchaseHistory(getUserId(request)));
+    }
+
+    private Long getUserId(HttpServletRequest request) {
+        return Long.valueOf(request.getHeader("X-User-Id"));
     }
 }

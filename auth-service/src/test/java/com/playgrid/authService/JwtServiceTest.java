@@ -29,7 +29,7 @@ class JwtServiceTest {
     void generateToken_shouldReturnNonEmptyToken() {
         UserDetails userDetails = new User("john@example.com", "password", Collections.emptyList());
 
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails, 1L);
 
         assertNotNull(token);
         assertFalse(token.isBlank());
@@ -38,7 +38,7 @@ class JwtServiceTest {
     @Test
     void isTokenValid_shouldReturnTrue_forCorrectUser() {
         UserDetails userDetails = new User("john@example.com", "password", Collections.emptyList());
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails, 1L);
 
         assertTrue(jwtService.isTokenValid(token, userDetails));
         assertEquals("john@example.com", jwtService.extractUsername(token));
@@ -48,7 +48,7 @@ class JwtServiceTest {
     void isTokenValid_shouldReturnFalse_forDifferentUser() {
         UserDetails userDetails = new User("john@example.com", "password", Collections.emptyList());
         UserDetails otherUser = new User("jane@example.com", "password", Collections.emptyList());
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails, 1L);
 
         assertFalse(jwtService.isTokenValid(token, otherUser));
     }

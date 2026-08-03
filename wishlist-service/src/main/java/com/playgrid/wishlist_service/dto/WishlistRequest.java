@@ -5,9 +5,6 @@ import lombok.Data;
 @Data
 public class WishlistRequest {
 
-    @NotNull(message = "User Id is required")
-    private Long userId;
-
     @NotNull(message = "Game Id is required")
     private Long gameId;
 

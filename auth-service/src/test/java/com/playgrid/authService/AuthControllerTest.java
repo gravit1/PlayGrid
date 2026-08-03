@@ -45,7 +45,7 @@ class AuthControllerTest {
         request.setEmail("john@example.com");
         request.setPassword("password123");
 
-        AuthResponse response = new AuthResponse("mocked-token", "johndoe", "john@example.com", "ROLE_USER");
+        AuthResponse response = new AuthResponse("mocked-token", 1L, "johndoe", "john@example.com", "ROLE_USER");
         when(authService.register(any(RegisterRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/auth/register")

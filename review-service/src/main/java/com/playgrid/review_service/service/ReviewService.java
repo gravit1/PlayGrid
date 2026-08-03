@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-    ReviewResponse addReview(ReviewRequest request);
+    ReviewResponse addReview(Long userId, ReviewRequest request);
 
     ReviewResponse updateReview(Long id, UpdateReviewRequest request);
 

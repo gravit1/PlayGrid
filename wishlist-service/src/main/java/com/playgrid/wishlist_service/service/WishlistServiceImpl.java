@@ -23,9 +23,9 @@ public class WishlistServiceImpl implements WishlistService {
     private final GameServiceClient gameServiceClient;
 
     @Override
-    public WishlistResponse addToWishlist(WishlistRequest request) {
+    public WishlistResponse addToWishlist(Long userId, WishlistRequest request) {
 
-        wishlistRepository.findByUserIdAndGameId(request.getUserId(), request.getGameId())
+        wishlistRepository.findByUserIdAndGameId(userId, request.getGameId())
                 .ifPresent(game -> {
                     throw new DuplicateWishlistException("Game already exists in wishlist");
                 });
@@ -43,7 +43,7 @@ public class WishlistServiceImpl implements WishlistService {
         }
 
         Wishlist wishlist = Wishlist.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .gameId(request.getGameId())
                 .build();
 

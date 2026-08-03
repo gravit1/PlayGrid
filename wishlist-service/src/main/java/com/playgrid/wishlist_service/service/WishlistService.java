@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WishlistService {
 
-    WishlistResponse addToWishlist(WishlistRequest request);
+    WishlistResponse addToWishlist(Long userId, WishlistRequest request);
 
     List<WishlistResponse> getUserWishlist(Long userId);
 

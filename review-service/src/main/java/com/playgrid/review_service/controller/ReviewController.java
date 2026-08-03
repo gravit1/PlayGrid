@@ -4,6 +4,7 @@ import com.playgrid.review_service.dto.ReviewRequest;
 import com.playgrid.review_service.dto.ReviewResponse;
 import com.playgrid.review_service.dto.UpdateReviewRequest;
 import com.playgrid.review_service.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,10 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<ReviewResponse> addReview(
-            @Valid @RequestBody ReviewRequest request) {
+            @Valid @RequestBody ReviewRequest request,
+            HttpServletRequest httpServletRequest) {
 
-        return ResponseEntity.ok(reviewService.addReview(request));
+        return ResponseEntity.ok(reviewService.addReview(getUserId(httpServletRequest), request));
     }
 
     @PutMapping("/{id}")
@@ -54,5 +56,9 @@ public class ReviewController {
             @PathVariable Long gameId) {
 
         return ResponseEntity.ok(reviewService.getAverageRating(gameId));
+    }
+
+    private Long getUserId(HttpServletRequest request) {
+        return Long.valueOf(request.getHeader("X-User-Id"));
     }
 }

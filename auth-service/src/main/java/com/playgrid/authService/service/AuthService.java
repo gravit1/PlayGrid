@@ -54,9 +54,9 @@ public class AuthService {
         userRepository.save(user);
         log.info("New user registered with email: {}", user.getEmail());
 
-        String token = jwtService.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
+        String token = jwtService.generateToken(userDetailsService.loadUserByUsername(user.getEmail()), user.getId());
 
-        return new AuthResponse(token, user.getUsername(), user.getEmail(), user.getRole().name());
+        return new AuthResponse(token, user.getId(), user.getUsername(), user.getEmail(), user.getRole().name());
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -68,11 +68,11 @@ public class AuthService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + request.getEmail()));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails, user.getId());
 
         log.info("User logged in with email: {}", user.getEmail());
 
-        return new AuthResponse(token, user.getUsername(), user.getEmail(), user.getRole().name());
+        return new AuthResponse(token, user.getId(), user.getUsername(), user.getEmail(), user.getRole().name());
     }
 
     public UserProfileResponse getProfile(String email) {

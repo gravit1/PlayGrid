@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface LibraryService {
 
-    LibraryResponse purchaseGame(PurchaseRequest request);
+    LibraryResponse purchaseGame(Long userId, PurchaseRequest request);
 
     List<LibraryResponse> getUserLibrary(Long userId);
 

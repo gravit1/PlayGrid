@@ -24,10 +24,10 @@ public class ReviewServiceImpl implements ReviewService {
     private final LibraryServiceClient libraryServiceClient;
 
     @Override
-    public ReviewResponse addReview(ReviewRequest request) {
+    public ReviewResponse addReview(Long userId, ReviewRequest request) {
 
         if (reviewRepository.existsByUserIdAndGameId(
-                request.getUserId(),
+                userId,
                 request.getGameId())) {
 
             throw new DuplicateReviewException("Review already exists");
@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         try {
             libraryServiceClient.getPurchasedGame(
-                    request.getUserId(),
+                    userId,
                     request.getGameId());
 
         } catch (FeignException.NotFound ex) {
@@ -45,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         Review review = Review.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .gameId(request.getGameId())
                 .rating(request.getRating())
                 .comment(request.getComment())

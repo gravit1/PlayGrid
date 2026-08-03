@@ -2,6 +2,7 @@ package com.playgrid.wishlist_service.controller;
 import com.playgrid.wishlist_service.dto.WishlistRequest;
 import com.playgrid.wishlist_service.dto.WishlistResponse;
 import com.playgrid.wishlist_service.service.WishlistService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,34 +19,38 @@ public class WishlistController {
 
     @PostMapping
     public ResponseEntity<WishlistResponse> addToWishlist(
-            @Valid @RequestBody WishlistRequest request) {
+            @Valid @RequestBody WishlistRequest request,
+            HttpServletRequest httpServletRequest) {
 
-        return ResponseEntity.ok(wishlistService.addToWishlist(request));
+        return ResponseEntity.ok(wishlistService.addToWishlist(getUserId(httpServletRequest), request));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<WishlistResponse>> getUserWishlist(
-            @PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<WishlistResponse>> getUserWishlist(HttpServletRequest request) {
 
-        return ResponseEntity.ok(wishlistService.getUserWishlist(userId));
+        return ResponseEntity.ok(wishlistService.getUserWishlist(getUserId(request)));
     }
 
-    @GetMapping("/user/{userId}/game/{gameId}")
+    @GetMapping("/game/{gameId}")
     public ResponseEntity<Boolean> isWishlisted(
-            @PathVariable Long userId,
-            @PathVariable Long gameId) {
+            @PathVariable Long gameId,
+            HttpServletRequest request) {
 
         return ResponseEntity.ok(
-                wishlistService.isWishlisted(userId, gameId));
+                wishlistService.isWishlisted(getUserId(request), gameId));
     }
 
-    @DeleteMapping("/user/{userId}/game/{gameId}")
+    @DeleteMapping("/game/{gameId}")
     public ResponseEntity<String> removeFromWishlist(
-            @PathVariable Long userId,
-            @PathVariable Long gameId) {
+            @PathVariable Long gameId,
+            HttpServletRequest request) {
 
-        wishlistService.removeFromWishlist(userId, gameId);
+        wishlistService.removeFromWishlist(getUserId(request), gameId);
 
         return ResponseEntity.ok("Game removed from wishlist");
+    }
+
+    private Long getUserId(HttpServletRequest request) {
+        return Long.valueOf(request.getHeader("X-User-Id"));
     }
 }

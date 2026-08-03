@@ -23,9 +23,9 @@ public class LibraryServiceImpl implements LibraryService {
     private final GameServiceClient gameServiceClient;
 
     @Override
-    public LibraryResponse purchaseGame(PurchaseRequest request) {
+    public LibraryResponse purchaseGame(Long userId, PurchaseRequest request) {
 
-        libraryRepository.findByUserIdAndGameId(request.getUserId(), request.getGameId())
+        libraryRepository.findByUserIdAndGameId(userId, request.getGameId())
                 .ifPresent(game -> {
                     throw new DuplicatePurchaseException("Game already purchased");
                 });
@@ -37,7 +37,7 @@ public class LibraryServiceImpl implements LibraryService {
         }
 
         Library library = Library.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .gameId(request.getGameId())
                 .purchasePrice(game.getPrice())
                 .build();
