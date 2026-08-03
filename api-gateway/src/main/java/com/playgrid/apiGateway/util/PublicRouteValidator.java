@@ -23,6 +23,7 @@ public class PublicRouteValidator {
                     || path.equals("/games/search")
                     || pathMatcher.match("/games/category/**", path)
                     || pathMatcher.match("/games/*", path)
+                    || pathMatcher.match("/reviews/game/**", path)
                     || pathMatcher.match("/uploads/**", path);
         }
 

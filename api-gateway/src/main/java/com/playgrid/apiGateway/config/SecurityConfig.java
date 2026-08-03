@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableReactiveMethodSecurity
@@ -23,11 +28,13 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
-                        .pathMatchers(HttpMethod.GET, "/games", "/games/*", "/games/search", "/games/category/**", "/uploads/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/games", "/games/*", "/games/search", "/games/category/**", "/reviews/game/**", "/uploads/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/games").hasAuthority("ROLE_ADMIN")
                         .pathMatchers(HttpMethod.PUT, "/games/**").hasAuthority("ROLE_ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "/games/**").hasAuthority("ROLE_ADMIN")
@@ -39,7 +46,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/reviews/**").hasAuthority("ROLE_USER")
                         .pathMatchers(HttpMethod.PUT, "/reviews/**").hasAuthority("ROLE_USER")
                         .pathMatchers(HttpMethod.DELETE, "/reviews/**").hasAuthority("ROLE_USER")
-                        .pathMatchers(HttpMethod.GET, "/reviews/**").hasAuthority("ROLE_USER")
+                        .pathMatchers(HttpMethod.GET, "/reviews/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyExchange().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -54,5 +61,18 @@ public class SecurityConfig {
                 )
                 .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
