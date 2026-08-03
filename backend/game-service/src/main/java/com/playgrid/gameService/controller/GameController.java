@@ -23,7 +23,7 @@ public class GameController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GameResponse> createGame(
             @Valid @ModelAttribute GameRequest request,
-            @RequestParam("thumbnail") MultipartFile thumbnail) {
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail) {
 
         return ResponseEntity.ok(gameService.createGame(request, thumbnail));
     }

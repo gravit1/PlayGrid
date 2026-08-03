@@ -12,6 +12,7 @@
         <module name="review-service" />
         <module name="api-gateway" />
         <module name="library-service" />
+        <module name="order-service" />
         <module name="eureka-server" />
         <module name="wishlist-service" />
       </profile>
@@ -24,6 +25,7 @@
       <module name="eureka-server" options="-parameters" />
       <module name="game-service" options="-parameters" />
       <module name="library-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="review-service" options="-parameters" />
       <module name="wishlist-service" options="-parameters" />
     </option>

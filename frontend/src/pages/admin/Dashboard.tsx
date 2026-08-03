@@ -3,14 +3,27 @@ import { Game } from '../../types';
 import { getAllGames, deleteGame } from '../../services/games';
 import { getImageUrl } from '../../services/api';
 import { Button } from '../../components/ui/Button';
+import { GameForm } from './GameForm';
 
 export const Dashboard = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingGame, setEditingGame] = useState<Game | null>(null);
 
   useEffect(() => {
     fetchGames();
   }, []);
+
+  const handleOpenForm = (game?: Game) => {
+    setEditingGame(game || null);
+    setIsFormOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+    setEditingGame(null);
+  };
 
   const fetchGames = async () => {
     try {
@@ -42,7 +55,7 @@ export const Dashboard = () => {
           <h1 className="text-3xl font-bold text-steam-text-light uppercase tracking-wider mb-2">Admin Dashboard</h1>
           <div className="h-1 w-20 bg-steam-accent"></div>
         </div>
-        <Button onClick={() => alert('Game form modal would open here to create new game')}>
+        <Button onClick={() => handleOpenForm()}>
           + Add New Game
         </Button>
       </div>
@@ -69,7 +82,7 @@ export const Dashboard = () => {
                 <td className="p-4">${game.price.toFixed(2)}</td>
                 <td className="p-4">{game.category}</td>
                 <td className="p-4 text-right space-x-2">
-                  <Button variant="secondary" className="px-3 py-1 text-sm inline-block">Edit</Button>
+                  <Button variant="secondary" className="px-3 py-1 text-sm inline-block" onClick={() => handleOpenForm(game)}>Edit</Button>
                   <Button variant="danger" className="px-3 py-1 text-sm inline-block" onClick={() => handleDelete(game.id)}>Delete</Button>
                 </td>
               </tr>
@@ -82,6 +95,13 @@ export const Dashboard = () => {
           </tbody>
         </table>
       </div>
+
+      <GameForm 
+        isOpen={isFormOpen} 
+        onClose={handleCloseForm} 
+        game={editingGame} 
+        onSave={fetchGames} 
+      />
     </div>
   );
 };

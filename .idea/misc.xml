@@ -11,6 +11,14 @@
         <option value="$PROJECT_DIR$/library-service/pom.xml" />
         <option value="$PROJECT_DIR$/wishlist-service/pom.xml" />
         <option value="$PROJECT_DIR$/review-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/game-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/library-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/review-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/wishlist-service/pom.xml" />
       </list>
     </option>
   </component>

@@ -35,4 +35,6 @@ public class GameUpdateRequest {
     private String publisher;
 
     private Boolean active;
+
+    private String thumbnailUrl;
 }

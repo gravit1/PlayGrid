@@ -38,10 +38,14 @@ public class GameServiceImpl implements GameService {
         game.setPublisher(request.getPublisher());
         game.setActive(true);
 
-        try {
-            game.setThumbnailUrl(fileUploadUtil.uploadFile(thumbnail));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload image");
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            try {
+                game.setThumbnailUrl(fileUploadUtil.uploadFile(thumbnail));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload image");
+            }
+        } else if (request.getThumbnailUrl() != null && !request.getThumbnailUrl().isEmpty()) {
+            game.setThumbnailUrl(request.getThumbnailUrl());
         }
 
         Game savedGame = gameRepository.save(game);
@@ -72,6 +76,8 @@ public class GameServiceImpl implements GameService {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to upload image");
             }
+        } else if (request.getThumbnailUrl() != null && !request.getThumbnailUrl().isEmpty()) {
+            game.setThumbnailUrl(request.getThumbnailUrl());
         }
 
         Game updatedGame = gameRepository.save(game);

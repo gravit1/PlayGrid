@@ -33,4 +33,6 @@ public class GameRequest {
 
     @NotBlank(message = "Publisher is required")
     private String publisher;
+
+    private String thumbnailUrl;
 }
