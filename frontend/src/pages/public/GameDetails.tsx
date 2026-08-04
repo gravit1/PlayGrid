@@ -5,7 +5,7 @@ import { useCart } from '../../context/CartContext';
 import { Game, Review } from '../../types';
 import { getGameById } from '../../services/games';
 import { getImageUrl } from '../../services/api';
-import { purchaseGame } from '../../services/library';
+import { purchaseGame, getLibraryGame } from '../../services/library';
 import { checkWishlist, addToWishlist, removeFromWishlist } from '../../services/wishlist';
 import { getReviewsByGame, getAverageRating, addReview } from '../../services/reviews';
 import { Button } from '../../components/ui/Button';
@@ -21,6 +21,7 @@ export const GameDetails = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [avgRating, setAvgRating] = useState({ averageRating: 0, totalReviews: 0 });
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isOwned, setIsOwned] = useState(false);
   const [loading, setLoading] = useState(true);
   
   const [reviewRating, setReviewRating] = useState(5);
@@ -47,6 +48,12 @@ export const GameDetails = () => {
             setIsWishlisted(wishlistStatus);
           } catch (e) {
             // Might not be wishlisted or other error, ignore
+          }
+          try {
+            await getLibraryGame(id);
+            setIsOwned(true);
+          } catch (e) {
+            // Not owned
           }
         }
       } catch (err) {
@@ -164,7 +171,11 @@ export const GameDetails = () => {
             
             {user?.role !== 'ROLE_ADMIN' && (
               <div className="w-full space-y-3">
-                {cartItems.some(item => item.id === game.id) ? (
+                {isOwned ? (
+                  <Button className="w-full py-3 text-lg flex items-center justify-center gap-2 bg-steam-panel text-steam-text-light border border-steam-accent cursor-default hover:bg-steam-panel">
+                    <ShoppingCart size={20} /> In Library
+                  </Button>
+                ) : cartItems.some(item => item.id === game.id) ? (
                   <Button className="w-full py-3 text-lg flex items-center justify-center gap-2 bg-steam-panel text-steam-text-light border border-steam-accent cursor-default hover:bg-steam-panel">
                     <ShoppingCart size={20} /> In Cart
                   </Button>

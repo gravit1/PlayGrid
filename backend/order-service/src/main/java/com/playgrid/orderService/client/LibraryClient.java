@@ -13,4 +13,8 @@ public interface LibraryClient {
     Object purchaseGame(
             @RequestHeader("X-User-Id") Long userId,
             @RequestBody PurchaseRequest request);
+
+    @org.springframework.web.bind.annotation.GetMapping("/library")
+    java.util.List<java.util.Map<String, Object>> getUserLibrary(
+            @RequestHeader("X-User-Id") Long userId);
 }

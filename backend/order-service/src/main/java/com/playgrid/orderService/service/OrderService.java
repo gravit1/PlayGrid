@@ -32,7 +32,15 @@ public class OrderService {
         List<OrderItem> items = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
 
+        List<java.util.Map<String, Object>> library = libraryClient.getUserLibrary(userId);
+        List<Long> ownedGameIds = library.stream()
+                .map(map -> ((Number) map.get("gameId")).longValue())
+                .collect(Collectors.toList());
+
         for (OrderItemRequest itemReq : request.getItems()) {
+            if (ownedGameIds.contains(itemReq.getGameId())) {
+                throw new RuntimeException("Game already purchased: " + itemReq.getTitle());
+            }
             double discountPct = itemReq.getDiscount() != null ? itemReq.getDiscount() : 0.0;
             BigDecimal originalPrice = itemReq.getPrice();
             BigDecimal discountFactor = BigDecimal.valueOf(1 - (discountPct / 100.0));
