@@ -23,7 +23,8 @@ public class OrderController {
             @Valid @RequestBody CreateOrderRequest request,
             HttpServletRequest httpServletRequest) {
         Long userId = getUserId(httpServletRequest);
-        return ResponseEntity.ok(orderService.createOrder(userId, request));
+        String userEmail = getUserEmail(httpServletRequest);
+        return ResponseEntity.ok(orderService.createOrder(userId, userEmail, request));
     }
 
     @GetMapping
@@ -46,5 +47,9 @@ public class OrderController {
             throw new RuntimeException("Missing X-User-Id header");
         }
         return Long.valueOf(userIdHeader);
+    }
+
+    private String getUserEmail(HttpServletRequest request) {
+        return request.getHeader("X-User-Email");
     }
 }

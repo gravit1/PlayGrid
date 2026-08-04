@@ -81,4 +81,8 @@ public class AuthService {
 
         return new UserProfileResponse(user.getId(), user.getUsername(), user.getEmail(), user.getRole().name());
     }
+
+    public java.util.List<String> getAllEmails() {
+        return userRepository.findAllEmails();
+    }
 }

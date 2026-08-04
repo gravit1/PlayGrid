@@ -24,9 +24,10 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final LibraryClient libraryClient;
+    private final org.springframework.kafka.core.KafkaTemplate<String, Object> kafkaTemplate;
 
     @Transactional
-    public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
+    public OrderResponse createOrder(Long userId, String userEmail, CreateOrderRequest request) {
         String orderNumber = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
         List<OrderItem> items = new ArrayList<>();
@@ -79,6 +80,17 @@ public class OrderService {
         }
 
         Order savedOrder = orderRepository.save(order);
+
+        List<String> gameTitles = items.stream().map(OrderItem::getGameTitle).collect(Collectors.toList());
+        PurchaseEvent event = PurchaseEvent.builder()
+                .userId(userId)
+                .userEmail(userEmail)
+                .orderNumber(orderNumber)
+                .totalAmount(totalAmount)
+                .gameTitles(gameTitles)
+                .build();
+        kafkaTemplate.send("purchase-events", event);
+
         return mapToOrderResponse(savedOrder);
     }
 

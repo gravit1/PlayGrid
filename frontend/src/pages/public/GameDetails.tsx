@@ -104,7 +104,7 @@ export const GameDetails = () => {
     
     setSubmittingReview(true);
     try {
-      const newReview = await addReview(game!.id, reviewRating, reviewComment);
+      const newReview = await addReview(game!.id, reviewRating, reviewComment, user?.username);
       setReviews([...reviews, newReview]);
       setReviewComment('');
       
@@ -262,11 +262,17 @@ export const GameDetails = () => {
           ) : (
             reviews.map(review => (
               <div key={review.id} className="bg-steam-panel p-4 rounded shadow border-l-4 border-steam-accent">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex gap-1 text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} className={i < review.rating ? 'fill-current' : 'text-steam-dark'} />
-                    ))}
+                <div className="flex justify-between items-start mb-3 border-b border-steam-dark pb-3">
+                  <div className="flex items-center gap-3">
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${review.username || review.userId}`} alt="Avatar" className="w-10 h-10 rounded-full bg-steam-dark" />
+                    <div>
+                      <div className="font-bold text-steam-text-light">{review.username || `User ${review.userId}`}</div>
+                      <div className="flex gap-1 text-yellow-400 mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={12} className={i < review.rating ? 'fill-current' : 'text-steam-dark'} />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                   <span className="text-xs text-steam-text">{new Date(review.createdAt).toLocaleDateString()}</span>
                 </div>

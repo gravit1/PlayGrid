@@ -22,6 +22,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final FileUploadUtil fileUploadUtil;
+    private final org.springframework.kafka.core.KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public GameResponse createGame(GameRequest request, MultipartFile thumbnail) {
@@ -49,6 +50,15 @@ public class GameServiceImpl implements GameService {
         }
 
         Game savedGame = gameRepository.save(game);
+
+        com.playgrid.gameService.dto.GamePublishedEvent event = com.playgrid.gameService.dto.GamePublishedEvent.builder()
+                .gameId(savedGame.getId())
+                .title(savedGame.getTitle())
+                .description(savedGame.getDescription())
+                .price(savedGame.getPrice())
+                .category(savedGame.getCategory())
+                .build();
+        kafkaTemplate.send("game-events", event);
 
         return mapToResponse(savedGame);
     }

@@ -15,6 +15,8 @@ public class ReviewResponse {
 
     private Long gameId;
 
+    private String username;
+
     private Integer rating;
 
     private String comment;

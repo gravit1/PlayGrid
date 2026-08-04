@@ -47,6 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = Review.builder()
                 .userId(userId)
                 .gameId(request.getGameId())
+                .username(request.getUsername())
                 .rating(request.getRating())
                 .comment(request.getComment())
                 .build();
@@ -106,6 +107,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .id(review.getId())
                 .userId(review.getUserId())
                 .gameId(review.getGameId())
+                .username(review.getUsername())
                 .rating(review.getRating())
                 .comment(review.getComment())
                 .createdAt(review.getCreatedAt())

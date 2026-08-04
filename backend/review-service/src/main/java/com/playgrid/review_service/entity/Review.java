@@ -26,6 +26,9 @@ public class Review {
     @Column(nullable = false)
     private Long gameId;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(nullable = false)
     @Min(1)
     @Max(5)

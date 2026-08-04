@@ -36,6 +36,7 @@ export interface LibraryItem {
 export interface Review {
   id: number;
   userId: number;
+  username?: string;
   gameId: number;
   rating: number;
   comment: string;

@@ -24,4 +24,9 @@ public class UserController {
         UserProfileResponse profile = authService.getProfile(email);
         return ResponseEntity.ok(profile);
     }
+
+    @GetMapping("/emails")
+    public ResponseEntity<java.util.List<String>> getAllEmails() {
+        return ResponseEntity.ok(authService.getAllEmails());
+    }
 }

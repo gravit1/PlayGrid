@@ -1,7 +1,7 @@
 import api from './api';
 
-export const addReview = async (gameId, rating, comment) => {
-  const response = await api.post('/reviews', { gameId, rating, comment });
+export const addReview = async (gameId, rating, comment, username) => {
+  const response = await api.post('/reviews', { gameId, rating, comment, username });
   return response.data;
 };
 
