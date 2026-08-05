@@ -4,11 +4,14 @@ import { Game } from '../../types';
 import { getImageUrl } from '../../services/api';
 import { Button } from '../ui/Button';
 
+import { ShieldCheck } from 'lucide-react';
+
 interface GameCardProps {
   game: Game;
+  isLibraryItem?: boolean;
 }
 
-export const GameCard: React.FC<GameCardProps> = ({ game }) => {
+export const GameCard: React.FC<GameCardProps> = ({ game, isLibraryItem = false }) => {
   const discountedPrice = game.discount > 0 
     ? game.price - (game.price * (game.discount / 100)) 
     : game.price;
@@ -24,9 +27,14 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
             (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/2a475e/c7d5e0?text=No+Image';
           }}
         />
-        {game.discount > 0 && (
+        {game.discount > 0 && !isLibraryItem && (
           <div className="absolute bottom-0 left-0 bg-green-500 text-white font-bold px-2 py-1 text-sm">
             -{game.discount}%
+          </div>
+        )}
+        {isLibraryItem && (
+          <div className="absolute top-2 right-2 bg-black/70 backdrop-blur border border-green-500/50 text-green-400 font-bold px-2 py-1 text-xs rounded flex items-center gap-1 shadow-lg">
+            <ShieldCheck size={14} /> Immutable License
           </div>
         )}
       </div>

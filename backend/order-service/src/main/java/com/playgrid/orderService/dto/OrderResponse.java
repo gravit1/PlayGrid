@@ -22,4 +22,7 @@ public class OrderResponse {
     private String paymentMethod;
     private List<OrderItemResponse> items;
     private LocalDateTime createdAt;
+    private String txHash;
+    private Long blockNumber;
+    private String blockHash;
 }

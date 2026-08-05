@@ -25,6 +25,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final LibraryClient libraryClient;
     private final org.springframework.kafka.core.KafkaTemplate<String, Object> kafkaTemplate;
+    private final BlockchainLedgerService blockchainLedgerService;
 
     @Transactional
     public OrderResponse createOrder(Long userId, String userEmail, CreateOrderRequest request) {
@@ -79,6 +80,8 @@ public class OrderService {
             item.setOrder(order);
         }
 
+        blockchainLedgerService.recordTransaction(order);
+
         Order savedOrder = orderRepository.save(order);
 
         List<String> gameTitles = items.stream().map(OrderItem::getGameTitle).collect(Collectors.toList());
@@ -128,6 +131,9 @@ public class OrderService {
                 .paymentMethod(order.getPaymentMethod())
                 .items(itemResponses)
                 .createdAt(order.getCreatedAt())
+                .txHash(order.getTxHash())
+                .blockNumber(order.getBlockNumber())
+                .blockHash(order.getBlockHash())
                 .build();
     }
 }

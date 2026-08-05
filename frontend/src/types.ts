@@ -62,5 +62,7 @@ export interface Order {
   paymentMethod: string;
   items: OrderItem[];
   createdAt: string;
+  txHash?: string;
+  blockNumber?: number;
+  blockHash?: string;
 }
-

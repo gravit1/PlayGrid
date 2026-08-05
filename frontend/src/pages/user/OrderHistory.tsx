@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserOrders } from '../../services/order';
 import { Order } from '../../types';
-import { ShoppingBag, Calendar, CreditCard, CheckCircle2, Package, ArrowLeft, Loader2 } from 'lucide-react';
+import { ShoppingBag, Calendar, CreditCard, CheckCircle2, Package, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
+import { BlockchainExplorerModal } from '../../components/game/BlockchainExplorerModal';
 
 export const OrderHistory: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [selectedOrderForExplorer, setSelectedOrderForExplorer] = useState<Order | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -89,6 +91,18 @@ export const OrderHistory: React.FC = () => {
                   </div>
                 </div>
 
+                {order.txHash && (
+                  <div className="flex-1 min-w-[200px] flex items-center justify-center sm:justify-start">
+                    <button 
+                      onClick={() => setSelectedOrderForExplorer(order)}
+                      className="bg-steam-dark border border-green-500/30 hover:border-green-500/60 hover:bg-green-500/10 transition-all px-3 py-1.5 rounded-full flex items-center gap-2 group"
+                    >
+                      <ShieldCheck size={16} className="text-green-500 group-hover:animate-pulse" />
+                      <span className="text-xs font-semibold text-green-400">On-Chain Verified (Block #{order.blockNumber})</span>
+                    </button>
+                  </div>
+                )}
+
                 <div className="flex items-center gap-6 text-sm text-steam-text">
                   <div className="flex items-center gap-1.5">
                     <Calendar size={16} className="text-steam-accent" />
@@ -144,6 +158,20 @@ export const OrderHistory: React.FC = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {selectedOrderForExplorer && (
+        <BlockchainExplorerModal 
+          isOpen={true}
+          onClose={() => setSelectedOrderForExplorer(null)}
+          orderNumber={selectedOrderForExplorer.orderNumber}
+          txHash={selectedOrderForExplorer.txHash || ''}
+          blockNumber={selectedOrderForExplorer.blockNumber || 0}
+          blockHash={selectedOrderForExplorer.blockHash || ''}
+          totalAmount={selectedOrderForExplorer.totalAmount}
+          userId={selectedOrderForExplorer.userId}
+          timestamp={selectedOrderForExplorer.createdAt}
+        />
       )}
     </div>
   );

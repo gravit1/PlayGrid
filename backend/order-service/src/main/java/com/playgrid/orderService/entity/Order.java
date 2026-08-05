@@ -45,6 +45,15 @@ public class Order {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column
+    private String txHash;
+
+    @Column
+    private Long blockNumber;
+
+    @Column
+    private String blockHash;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
